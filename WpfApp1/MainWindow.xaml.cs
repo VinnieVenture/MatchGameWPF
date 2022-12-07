@@ -19,6 +19,8 @@ namespace WpfApp1
         DispatcherTimer timer = new DispatcherTimer();
         int tenthsOfSecondsElapsed;
         int matchesFound;
+
+        float ?bestTime = null;
         
         public MainWindow()
         {
@@ -33,38 +35,35 @@ namespace WpfApp1
         private void Timer_Tick(object? sender, EventArgs e)
         {
             tenthsOfSecondsElapsed++;
-            timeTextBlock.Text = (tenthsOfSecondsElapsed/10F).ToString("0.0s");
+            float time = (tenthsOfSecondsElapsed / 10F);
+            timeTextBlock.Text = time.ToString("0.0s");
+
             if (matchesFound == 8) { 
                 timer.Stop();
+                bestTime = bestTime != null
+                    ? (time < bestTime ? time : bestTime)
+                    : time;
+                
                 timeTextBlock.Text = timeTextBlock.Text + " - jeszcze raz?";
+                bestTimeTextBlock.Text = "Najlepszy czas: " + bestTime.ToString() + "s";
             }
         }
 
         private void SetUpGame()
         {
-            List<string> animalEmoji = new List<string>()
-            {
-                "🦝","🦝",
-                "🐮","🐮",
-                "🐷","🐷",
-                "🐗","🐗",
-                "🐭","🐭",
-                "🐰","🐰",
-                "🐻","🐻",
-                "🐴","🐴"
-            };
-
+            var emojiList = getEmojiList();
             Random random = new Random();
 
             foreach(TextBlock textBlock in mainGrid.Children.OfType<TextBlock>())
             {
-                if (textBlock.Name == "timeTextBlock") continue;
+                if (textBlock.Name == "timeTextBlock" 
+                    || textBlock.Name == "bestTimeTextBlock") continue;
 
-                int index = random.Next(animalEmoji.Count);
-                string nextEmoji = animalEmoji[index];
+                int index = random.Next(emojiList.Count);
+                string nextEmoji = emojiList[index];
                 textBlock.Text = nextEmoji;
                 textBlock.Visibility = Visibility.Visible;
-                animalEmoji.RemoveAt(index);
+                emojiList.RemoveAt(index);
             }
             timer.Start();
             matchesFound = 0;
@@ -99,6 +98,70 @@ namespace WpfApp1
             {
                 SetUpGame();
             }
+        }
+
+        private List<string> getEmojiList()
+        {
+            List<string> animalEmoji = new List<string>()
+            {
+                "🦝","🦝",
+                "🐮","🐮",
+                "🐷","🐷",
+                "🐗","🐗",
+                "🐭","🐭",
+                "🐰","🐰",
+                "🐻","🐻",
+                "🐴","🐴"
+            };
+            List<string> humanEmoji = new List<string>()
+            {
+                "👩","👩",
+                "👨","👨",
+                "👵","👵",
+                "👲","👲",
+                "🧔","🧔",
+                "🎅","🎅",
+                "👮‍♀️","👮‍♀️",
+                "🕵️‍♀️","🕵️‍♀️",
+            };
+            List<string> fruitsEmoji = new List<string>()
+            {
+                "🥝","🥝",
+                "🥥","🥥",
+                "🍇","🍇",
+                "🍍","🍍",
+                "🍌","🍌",
+                "🍉","🍉",
+                "🌶","🌶",
+                "🍄","🍄",
+            };
+            List<string> transportEmoji = new List<string>()
+            {
+                "🚗","🚗",
+                "🛺","🛺",
+                "🚖","🚖",
+                "🏍","🏍",
+                "🛴","🛴",
+                "🛩","🛩",
+                "🛸", "🛸",
+                "🚁","🚁",
+            };
+            List<string> otherEmoji = new List<string>()
+            {
+                "🌄", "🌄",
+                "⛲", "⛲",
+                "♨",  "♨",
+                "🛎", "🛎",
+                "🌫", "🌫",
+                "🌦", "🌦",
+                "🌜",  "🌜",
+                "☂",  "☂",
+            };
+
+            Random random = new Random();
+            List<List<string>> list = new List<List<string>>() { animalEmoji, humanEmoji, fruitsEmoji, transportEmoji, otherEmoji};
+
+            return list[random.Next(list.Count)];
         }
     }
 }

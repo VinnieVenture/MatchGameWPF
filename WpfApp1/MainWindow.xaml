@@ -40,6 +40,7 @@
         <TextBlock Grid.Column="3" HorizontalAlignment="Center" Grid.Row="2" Text="?" VerticalAlignment="Center" FontSize="36" MouseDown="TextBlock_MouseDown" />
         <TextBlock Grid.Column="3" HorizontalAlignment="Center" Grid.Row="3" Text="?" VerticalAlignment="Center" FontSize="36" MouseDown="TextBlock_MouseDown" />
         <TextBlock x:Name="timeTextBlock" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="4" Grid.ColumnSpan="4" FontSize="36" Text="Czas: " MouseDown="TimeTextBlock_MouseDown"/>
+        <TextBlock x:Name="bestTimeTextBlock" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Bottom" Grid.Row="4" Grid.ColumnSpan="4" Text="Najlepszy czas: " MouseDown="TimeTextBlock_MouseDown"/>
 
     </Grid>
 </Window>
